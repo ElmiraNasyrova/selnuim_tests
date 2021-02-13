@@ -3,26 +3,21 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.common.exceptions import TimeoutException
 
-USERNAME = 'demo'
-PASSWORD = 'demo'
+USERNAME = 'user'
+PASSWORD = 'bitnami'
 
 
-def auth_admin(browser):
-    browser.get("https://demo.opencart.com/admin/")
-
-    browser.find_element_by_name("username").clear()
-    browser.find_element_by_name("password").clear()
-
-    browser.find_element_by_name("username").send_keys(USERNAME)
-    browser.find_element_by_name("password").send_keys(PASSWORD)
-    browser.find_element_by_xpath("//*[@type='submit']").click()
+def auth_admin(admin_page):
+    admin_page.find_element_by_name("username").send_keys(USERNAME)
+    admin_page.find_element_by_name("password").send_keys(PASSWORD)
+    admin_page.find_element_by_xpath("//*[@type='submit']").click()
 
 
-def test_login_and_logout_admin(browser):
-    auth_admin(browser)
+def test_login_and_logout_admin(admin_page):
+    auth_admin(admin_page)
 
     try:
-        logout_button = WebDriverWait(browser, 5).until(
+        logout_button = WebDriverWait(admin_page, 5).until(
             EC.visibility_of_element_located((By.XPATH, "//*[contains(@class, 'sign-out')]")))
         logout_button.click()
         result = True
@@ -31,14 +26,14 @@ def test_login_and_logout_admin(browser):
 
     assert result, "Не удалось залогиниться"
 
-    login_button = browser.find_elements_by_xpath("//*[@type='submit']")
+    login_button = admin_page.find_elements_by_xpath("//*[@type='submit']")
     assert len(login_button) == 1, "Не удалось разлогиниться"
 
 
-def test_check_product_section(browser):
-    auth_admin(browser)
+def test_check_product_section(admin_page):
+    auth_admin(admin_page)
 
-    wait = WebDriverWait(browser, 10, 1)
+    wait = WebDriverWait(admin_page, 10, 1)
 
     products_button = wait.until(EC.visibility_of_element_located((By.CSS_SELECTOR, "#menu-catalog")))
     products_button.click()

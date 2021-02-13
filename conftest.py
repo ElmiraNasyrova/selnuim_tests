@@ -83,7 +83,7 @@ def open_sign_in_page(request, browser):
     return browser
 
 
-@pytest.fixture(name='admin_sign_in_page')
+@pytest.fixture(name='admin_page')
 def open_admin_sign_in_page(request, browser):
     base_url = request.config.getoption("--url")
     url = base_url + '/admin/'

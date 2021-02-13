@@ -18,8 +18,8 @@ def test_find_elements_in_home_page(home_page):
 def test_find_elements_in_components_catalog(catalog_page):
     wait = WebDriverWait(catalog_page, 5)
 
-    wait.until(catalog_page.find_element_by_link_text("Tablets"))
-    wait.until(EC.visibility_of((By.ID, "input-sort")))
+    wait.until(lambda driver: driver.find_element_by_link_text("Tablets"))
+    wait.until(EC.visibility_of_element_located((By.ID, "input-sort")))
 
     catalog_page.find_element_by_xpath("//*[contains(text(),'Apple')]")
     catalog_page.find_element_by_partial_link_text("Components").click()
@@ -44,12 +44,12 @@ def test_find_elements_in_sign_in(sign_in_page):
     sign_in_page.find_element_by_link_text("Register")
 
 
-def test_find_elements_in_admin_login(admin_sign_in_page):
-    wait = WebDriverWait(admin_sign_in_page, 10, 1)
+def test_find_elements_in_admin_login(admin_page):
+    wait = WebDriverWait(admin_page, 10, 1)
     wait.until(EC.title_is("Administration"))
 
-    admin_sign_in_page.find_element_by_xpath("//*[@title='OpenCart']")
-    admin_sign_in_page.find_element_by_name("username")
-    admin_sign_in_page.find_element_by_id("input-password")
-    admin_sign_in_page.find_element_by_class_name('help-block')
-    admin_sign_in_page.find_element_by_css_selector("button[type='submit']")
+    admin_page.find_element_by_xpath("//*[@title='OpenCart']")
+    admin_page.find_element_by_name("username")
+    admin_page.find_element_by_id("input-password")
+    admin_page.find_element_by_class_name('help-block')
+    admin_page.find_element_by_css_selector("button[type='submit']")
