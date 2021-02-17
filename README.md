@@ -1,1 +1,2 @@
-# selnuim_tests
+# Tests automated with Selenuim
+
