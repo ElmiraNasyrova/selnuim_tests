@@ -7,9 +7,6 @@ def pytest_addoption(parser):
                      default='chrome',
                      choices=["chrome", "firefox", "safari"],
                      help="Choice browser")
-    parser.addoption("--url",
-                     default='http://localhost',
-                     help="Input url")
     parser.addoption("--headless",
                      action="store_true",
                      help="Run headless")
@@ -52,40 +49,9 @@ def browser(request):
     return driver
 
 
-@pytest.fixture(name='home_page')
-def open_home_page(request, browser):
-    base_url = request.config.getoption("--url")
-    browser.get(base_url)
-    return browser
-
-
-@pytest.fixture(name='catalog_page')
-def open_catalog_page(request, browser):
-    base_url = request.config.getoption("--url")
-    url = base_url + '/index.php?route=product/category&path=20'
-    browser.get(url)
-    return browser
-
-
-@pytest.fixture(name='product_card_page')
-def open_product_card_page(request, browser):
-    base_url = request.config.getoption("--url")
-    url = base_url + '/index.php?route=product/product&path=57&product_id=49'
-    browser.get(url)
-    return browser
-
 
 @pytest.fixture(name='sign_in_page')
 def open_sign_in_page(request, browser):
     base_url = request.config.getoption("--url")
-    url = base_url + '/index.php?route=account/login'
-    browser.get(url)
-    return browser
-
-
-@pytest.fixture(name='admin_page')
-def open_admin_sign_in_page(request, browser):
-    base_url = request.config.getoption("--url")
-    url = base_url + '/admin/'
-    browser.get(url)
+    browser.get(base_url + '/index.php?route=account/login')
     return browser
