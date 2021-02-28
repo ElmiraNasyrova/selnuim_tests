@@ -47,11 +47,3 @@ def browser(request):
     request.addfinalizer(teardown)
 
     return driver
-
-
-
-@pytest.fixture(name='sign_in_page')
-def open_sign_in_page(request, browser):
-    base_url = request.config.getoption("--url")
-    browser.get(base_url + '/index.php?route=account/login')
-    return browser
