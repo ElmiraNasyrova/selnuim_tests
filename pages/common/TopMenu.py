@@ -7,10 +7,10 @@ class TopMenu(BasePage):
 
     @property
     def cart(self):
-        return self.get_element((By.CSS_SELECTOR, '#cart'))
+        return self.get_element((By.CSS_SELECTOR, '#cart-total'))
 
     def click_to_cart(self):
-        return self.mouse_click_to_element(self.cart)
+        self.mouse_click_to_element(self.cart)
 
     def get_cart_text(self):
         return self.get_element_text(self.cart)

@@ -1,11 +1,11 @@
+import allure
 from pages import AdminPage
-
-import time
 
 USERNAME = 'user'
 PASSWORD = 'bitnami'
 
 
+@allure.description("Авторизация по уч записью админа, выход из уч записи")
 def test_login_and_logout_admin(browser):
     admin_page = AdminPage(browser)
 
@@ -16,6 +16,7 @@ def test_login_and_logout_admin(browser):
     assert admin_page.login_button, "Не удалось разлогиниться"
 
 
+@allure.title("Проверка отображения секций с товарами")
 def test_check_product_section(browser):
     admin_page = AdminPage(browser)
 
