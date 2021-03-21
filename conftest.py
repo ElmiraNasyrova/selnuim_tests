@@ -1,43 +1,45 @@
 import pytest
+import os
+
 from selenium import webdriver
 
 
 def pytest_addoption(parser):
-    parser.addoption("--browser",
-                     default='chrome',
-                     choices=["chrome", "firefox", "safari"],
-                     help="Choice browser")
-    parser.addoption("--headless",
-                     action="store_true",
-                     help="Run headless")
+    parser.addoption("--browser", action="store", default='chrome')
+    parser.addoption("--browversion", action="store", default="88.0")
+    parser.addoption("--executor", action="store", default="192.168.0.102")
 
 
 @pytest.fixture
 def browser(request):
-    browser = request.config.getoption("--browser")
-    headless = request.config.getoption("--headless")
-
     driver = None
 
-    if browser == "chrome":
-        options = webdriver.ChromeOptions()
-        if headless: options.headless = True
-        driver = webdriver.Chrome(
-            executable_path='//Users//finomteam//Desktop//Drivers//chromedriver',
-            options=options)
+    browser = request.config.getoption("--browser")
+    version = request.config.getoption("--browversion")
+    executor = request.config.getoption("--executor")
 
-    elif browser == "firefox":
-        options = webdriver.FirefoxOptions()
-        if headless: options.headless = True
-        driver = webdriver.Firefox(
-            executable_path='//Users//finomteam//Desktop//Drivers//geckodriver',
-            options=options)
+    add_environments_properties(browser, version)
+
+    if browser.lower() != 'safari':
+        executor_url = f"http://{executor}:4444/wd/hub"
+
+        capabilities = {
+            "browserName": browser,
+            "version": version,
+            "screenResolution": "1280x720",
+            "selenoid:options": {
+                "enableVNC": True,
+                "enableVideo": False,
+                "enableLog": False
+            }
+        }
+
+        driver = webdriver.Remote(
+            command_executor=executor_url,
+            desired_capabilities=capabilities)
 
     elif browser == "safari":
         driver = webdriver.Safari()
-
-    else:
-        raise Exception("Specified wrong browser platform. Available platforms: [chrome, firefox, safari]")
 
     driver.maximize_window()
 
@@ -47,3 +49,12 @@ def browser(request):
     request.addfinalizer(teardown)
 
     return driver
+
+
+def add_environments_properties(browser, version):
+    with open('environment.properties', 'w') as f:
+        f.write("Browser={browser}\n".format(browser = browser))
+        f.write("Browser.Version={version}".format(version = version))
+
+    folder_path = os.getcwd()
+    os.replace("environment.properties", folder_path + "/allure-results/environment.properties")

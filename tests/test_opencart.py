@@ -1,14 +1,18 @@
+import allure
+from mimesis import Person
+
 from pages import HomePage, NavigationBar, CategoriesPage, ProductPage, SignUpPage, SignInPage
 from pages.common import TopMenu, Alert
-from mimesis import Person
 
 
 def test_open_opencart_page(browser):
+    """Открытие главной страницы Opencart"""
     home_page = HomePage(browser)
     home_page.open_page()
     assert home_page.opencart_logo
 
 
+@allure.description("Добавление в корзину рекомендуемых товаров с домашней страницы")
 def test_add_featured_product_to_cart_from_home_page(browser):
     home_page = HomePage(browser)
     home_page.open_page()
@@ -23,6 +27,7 @@ def test_add_featured_product_to_cart_from_home_page(browser):
     assert product_name in added_product_name
 
 
+@allure.title("Открытие карточки товара")
 def test_open_product_card_from_catalog(browser):
     CATEGORY = 'Tablets'
 
@@ -43,6 +48,7 @@ def test_open_product_card_from_catalog(browser):
     assert product_title == product_name
 
 
+@allure.description("Добавление в корзину со страницы товара")
 def test_add_product_to_cart_from_product_page(browser):
     QTY = 2
 
@@ -62,6 +68,7 @@ def test_add_product_to_cart_from_product_page(browser):
     assert str(product_price*QTY) in cart_total_amount
 
 
+@allure.title("Регистрация клиента")
 def test_sign_up_user(browser):
     person = Person()
     TEST_DATA = {
