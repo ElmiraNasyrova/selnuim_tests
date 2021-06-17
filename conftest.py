@@ -9,10 +9,10 @@ logging.basicConfig(level=logging.INFO, filename=os.getcwd() + "/selenium.log")
 
 
 def pytest_addoption(parser):
-    parser.addoption("--browser", action="store", default='firefox')
-    parser.addoption("--browversion", action="store", default="89.0")
+    parser.addoption("--browser", action="store", default='chrome')
+    parser.addoption("--browversion", action="store", default="88.0")
     parser.addoption("--executor", action="store", default="192.168.0.100")
-    parser.addoption("--localexecute", action="store", default=True)
+    parser.addoption("--localexecute", action="store", default=False)
     parser.addoption("--headless", action="store_true", help="Run headless")
 
 
